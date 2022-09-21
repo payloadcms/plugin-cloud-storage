@@ -32,7 +32,7 @@ export type GenerateURL = (args: {
   filename: string
   collection: CollectionConfig
   prefix?: string
-}) => string | Promise<string>
+}) => string | null | Promise<string | null>
 
 export type StaticHandler = (
   req: PayloadRequest,

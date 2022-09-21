@@ -1,5 +1,5 @@
 import path from 'path'
-import { Storage } from '@google-cloud/storage'
+import type { Storage } from '@google-cloud/storage'
 import type { GenerateURL } from '../../types'
 
 interface Args {
@@ -10,7 +10,10 @@ interface Args {
 export const getGenerateURL =
   ({ gcs, bucket }: Args): GenerateURL =>
   ({ filename, prefix = '' }) => {
-    return decodeURIComponent(
-      gcs.bucket(bucket).file(path.posix.join(prefix, filename)).publicUrl(),
-    )
+    if (filename) {
+      return decodeURIComponent(
+        gcs.bucket(bucket).file(path.posix.join(prefix, filename)).publicUrl(),
+      )
+    }
+    return null
   }
