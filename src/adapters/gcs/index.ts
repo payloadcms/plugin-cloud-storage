@@ -14,7 +14,7 @@ export interface Args {
 
 export const gcsAdapter =
   ({ options, bucket, acl }: Args): Adapter =>
-  ({ collection, prefix }): GeneratedAdapter => {
+  ({ collection, prefix, generatePrefix }): GeneratedAdapter => {
     const gcs = new Storage(options)
 
     return {
@@ -24,6 +24,7 @@ export const gcsAdapter =
         bucket,
         acl,
         prefix,
+        generatePrefix,
       }),
       handleDelete: getHandleDelete({ gcs, bucket }),
       generateURL: getGenerateURL({ gcs, bucket }),

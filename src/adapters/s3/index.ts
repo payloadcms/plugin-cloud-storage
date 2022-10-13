@@ -1,4 +1,5 @@
 import * as AWS from '@aws-sdk/client-s3'
+import path from 'path'
 import type { Adapter, GeneratedAdapter } from '../../types'
 import { getGenerateURL } from './generateURL'
 import { getHandler } from './staticHandler'
@@ -14,9 +15,8 @@ export interface Args {
 
 export const s3Adapter =
   ({ config, bucket, acl }: Args): Adapter =>
-  ({ collection, prefix }): GeneratedAdapter => {
+  ({ collection, prefix, generatePrefix }): GeneratedAdapter => {
     const s3 = new AWS.S3(config)
-
     return {
       handleUpload: getHandleUpload({
         collection,
@@ -24,6 +24,7 @@ export const s3Adapter =
         bucket,
         acl,
         prefix,
+        generatePrefix,
       }),
       handleDelete: getHandleDelete({ s3, bucket }),
       generateURL: getGenerateURL({ bucket, config }),

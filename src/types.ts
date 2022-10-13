@@ -48,7 +48,11 @@ export interface GeneratedAdapter {
   webpack?: (config: WebpackConfig) => WebpackConfig
 }
 
-export type Adapter = (args: { collection: CollectionConfig; prefix?: string }) => GeneratedAdapter
+export type Adapter = (args: {
+  collection: CollectionConfig
+  prefix?: string
+  generatePrefix?: GeneratePrefix
+}) => GeneratedAdapter
 
 export type GenerateFileURL = (args: {
   collection: CollectionConfig
@@ -57,11 +61,14 @@ export type GenerateFileURL = (args: {
   size?: ImageSize
 }) => Promise<string> | string
 
+export type GeneratePrefix = () => string[]
+
 export interface CollectionOptions {
   disableLocalStorage?: boolean
   disablePayloadAccessControl?: true
   generateFileURL?: GenerateFileURL
   prefix?: string
+  generatePrefix?: GeneratePrefix
   adapter: Adapter | null
 }
 

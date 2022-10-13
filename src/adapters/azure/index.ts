@@ -15,7 +15,7 @@ export interface Args {
 
 export const azureBlobStorageAdapter =
   ({ connectionString, containerName, baseURL, allowContainerCreate }: Args): Adapter =>
-  ({ collection, prefix }): GeneratedAdapter => {
+  ({ collection, prefix, generatePrefix }): GeneratedAdapter => {
     const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString)
     const containerClient = blobServiceClient.getContainerClient(containerName)
 
@@ -25,6 +25,7 @@ export const azureBlobStorageAdapter =
         containerClient,
         allowContainerCreate,
         prefix,
+        generatePrefix,
       }),
       handleDelete: getHandleDelete({ collection, containerClient }),
       generateURL: getGenerateURL({ containerName, baseURL }),

@@ -2,7 +2,7 @@ import path from 'path'
 import type { GroupField, TextField } from 'payload/dist/fields/config/types'
 import type { CollectionConfig, Field } from 'payload/types'
 import { getAfterReadHook } from '../hooks/afterRead'
-import type { GeneratedAdapter, GenerateFileURL } from '../types'
+import type { GeneratedAdapter, GenerateFileURL, GeneratePrefix } from '../types'
 
 interface Args {
   collection: CollectionConfig
@@ -10,6 +10,7 @@ interface Args {
   generateFileURL?: GenerateFileURL
   prefix?: string
   adapter: GeneratedAdapter
+  generatePrefix?: GeneratePrefix
 }
 
 export const getFields = ({
@@ -18,6 +19,7 @@ export const getFields = ({
   disablePayloadAccessControl,
   generateFileURL,
   prefix,
+  generatePrefix,
 }: Args): Field[] => {
   const baseURLField: Field = {
     name: 'url',
@@ -144,10 +146,15 @@ export const getFields = ({
       fields.splice(existingPrefixFieldIndex, 1)
     }
 
+    const folders = [prefix]
+    if (generatePrefix && typeof generatePrefix === 'function') {
+      folders.push(...generatePrefix())
+    }
+
     fields.push({
       ...basePrefixField,
       ...(existingPrefixField || {}),
-      defaultValue: path.posix.join(prefix),
+      defaultValue: path.posix.join(...folders),
     })
   }
 
