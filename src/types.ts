@@ -51,8 +51,7 @@ export interface GeneratedAdapter {
 
 export type Adapter = (args: {
   collection: CollectionConfig
-  prefix?: string
-  generatePrefix?: GeneratePrefix
+  prefix?: GeneratePrefix
 }) => GeneratedAdapter
 
 export type GenerateFileURL = (args: {
@@ -62,14 +61,13 @@ export type GenerateFileURL = (args: {
   size?: ImageSize
 }) => Promise<string> | string
 
-export type GeneratePrefix = () => string[]
+export type GeneratePrefix = string | (() => string)
 
 export interface CollectionOptions {
   disableLocalStorage?: boolean
   disablePayloadAccessControl?: true
   generateFileURL?: GenerateFileURL
-  prefix?: string
-  generatePrefix?: GeneratePrefix
+  prefix?: GeneratePrefix
   adapter: Adapter | null
 }
 

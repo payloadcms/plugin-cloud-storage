@@ -36,7 +36,6 @@ export const cloudStorage =
           const adapter = options.adapter({
             collection: existingCollection,
             prefix: options.prefix,
-            generatePrefix: options.generatePrefix,
           })
 
           if (adapter.onInit) initFunctions.push(adapter.onInit)
@@ -47,7 +46,6 @@ export const cloudStorage =
             generateFileURL: options.generateFileURL,
             prefix: options.prefix,
             adapter,
-            generatePrefix: options.generatePrefix,
           })
 
           const handlers = [

@@ -29,7 +29,6 @@ export const s3Adapter =
         bucket,
         acl,
         prefix,
-        generatePrefix,
       }),
       handleDelete: getHandleDelete({ getStorageClient, bucket }),
       generateURL: getGenerateURL({ bucket, config }),

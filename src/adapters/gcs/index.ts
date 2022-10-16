@@ -28,7 +28,6 @@ export const gcsAdapter =
         bucket,
         acl,
         prefix,
-        generatePrefix,
       }),
       handleDelete: getHandleDelete({ getStorageClient, bucket }),
       generateURL: getGenerateURL({ getStorageClient, bucket }),

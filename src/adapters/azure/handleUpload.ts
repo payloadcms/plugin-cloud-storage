@@ -6,14 +6,15 @@ import type { HandleUpload, GeneratePrefix } from '../../types'
 interface Args {
   collection: CollectionConfig
   getStorageClient: () => ContainerClient
-  prefix?: string
-  generatePrefix?: GeneratePrefix
+  prefix?: GeneratePrefix
 }
 
 export const getHandleUpload = ({ getStorageClient, prefix = '' }: Args): HandleUpload => {
   return async ({ data, file }) => {
+    const key: string = typeof prefix === 'function' ? prefix() : prefix
+
     const blockBlobClient = getStorageClient().getBlockBlobClient(
-      path.posix.join(prefix, file.filename),
+      path.posix.join(key, file.filename),
     )
 
     await blockBlobClient.upload(file.buffer, file.buffer.byteLength, {

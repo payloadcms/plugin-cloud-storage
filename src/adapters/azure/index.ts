@@ -36,7 +36,6 @@ export const azureBlobStorageAdapter = ({
         collection,
         getStorageClient,
         prefix,
-        generatePrefix,
       }),
       handleDelete: getHandleDelete({ collection, getStorageClient }),
       generateURL: getGenerateURL({ containerName, baseURL }),

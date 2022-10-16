@@ -7,7 +7,7 @@ interface Args {
   collection: CollectionConfig
   bucket: string
   acl?: 'Private' | 'Public'
-  prefix?: string
+  prefix?: GeneratePrefix
   getStorageClient: () => Storage
 }
 
@@ -18,7 +18,8 @@ export const getHandleUpload = ({
   prefix = '',
 }: Args): HandleUpload => {
   return async ({ data, file }) => {
-    const gcsFile = getStorageClient().bucket(bucket).file(path.posix.join(prefix, file.filename))
+    const key: string = typeof prefix === 'function' ? prefix() : prefix
+    const gcsFile = getStorageClient().bucket(bucket).file(path.posix.join(key, file.filename))
     await gcsFile.save(file.buffer, {
       metadata: {
         contentType: file.mimeType,

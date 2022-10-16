@@ -56,8 +56,7 @@ This plugin is configurable to work across many different Payload collections. A
 | `adapter` *                   | [Adapter](https://github.com/payloadcms/plugin-cloud-storage/blob/master/src/types.ts#L51)         | Pass in the adapter that you'd like to use for this collection. You can also set this field to `null` for local development if you'd like to bypass cloud storage in certain scenarios and use local storage. |
 | `disableLocalStorage`         | `boolean`                                                                                          | Choose to disable local storage on this collection. Defaults to `true`.                                                                                                                                       |
 | `disablePayloadAccessControl` | `true`                                                                                             | Set to `true` to disable Payload's access control. [More](#payload-access-control)                                                                                                                            |
-| `prefix`                      | `string`                                                                                           | Set to `media/images` to upload files inside `media/images` folder in the bucket.                                                                                                                             |
-| `generatePrefix`              | [GeneratePrefix](https://github.com/payloadcms/plugin-cloud-storage/blob/master/src/types.ts#L71)  | Automatic prefix generation, the above default prefix combination will create the final prefix                                                                                                                |
+| `prefix`                      | [GeneratePrefix](https://github.com/payloadcms/plugin-cloud-storage/blob/master/src/types.ts#L71)  | Set to `media/images` to upload files inside `media/images` folder in the bucket or define a function to auto generate prefix (ex: using datetime)                                                            |
 | `generateFileURL`             | [GenerateFileURL](https://github.com/payloadcms/plugin-cloud-storage/blob/master/src/types.ts#L57) | Override the generated file URL with one that you create.                                                                                                                                                     |
 
 ```ts
@@ -69,15 +68,13 @@ export default buildConfig({
       collections: {
         'my-collection-slug': {
           adapter: theAdapterToUse,
-          prefix: 'assets/images',
-          generatePrefix: () => {
-              return [
-                moment().format('YYYY'),
-                moment().format('MM'),
-                moment().format('DD')
-              ]
-          }
-          // Asuming today is 2022 Oct 05 => The final folder will be assets/images/2022/10/05/filename.jpg
+          // Asuming today is 2022 Oct 05 => The final folder will be /assets/images/2022/10/05/filename.jpg
+          prefix: () => {
+            const year = moment().format('YYYY')
+            const month = moment().format('MM')
+            const day = moment().format('DD')
+            return path.posix.join('assets', 'images', year, month, day)
+          },
         },
       },
     }),
