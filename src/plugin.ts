@@ -21,6 +21,8 @@ export const cloudStorage =
 
     const webpack = extendWebpackConfig({ options: pluginOptions, config })
 
+    const initFunctions: (() => void)[] = []
+
     return {
       ...config,
       admin: {
@@ -36,6 +38,8 @@ export const cloudStorage =
             prefix: options.prefix,
             generatePrefix: options.generatePrefix,
           })
+
+          if (adapter.onInit) initFunctions.push(adapter.onInit)
 
           const fields = getFields({
             collection: existingCollection,
@@ -84,5 +88,9 @@ export const cloudStorage =
 
         return existingCollection
       }),
+      onInit: async payload => {
+        initFunctions.forEach(fn => fn())
+        if (config.onInit) await config.onInit(payload)
+      },
     }
   }

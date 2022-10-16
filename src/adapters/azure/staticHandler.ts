@@ -5,22 +5,22 @@ import type { StaticHandler } from '../../types'
 import { getFilePrefix } from '../../utilities/getFilePrefix'
 
 interface Args {
-  containerClient: ContainerClient
+  getStorageClient: () => ContainerClient
   collection: CollectionConfig
 }
 
-export const getHandler = ({ containerClient, collection }: Args): StaticHandler => {
+export const getHandler = ({ getStorageClient, collection }: Args): StaticHandler => {
   return async (req, res, next) => {
     try {
       const prefix = await getFilePrefix({ req, collection })
-      const blockBlobClient = containerClient.getBlockBlobClient(
+      const blockBlobClient = getStorageClient().getBlockBlobClient(
         path.posix.join(prefix, req.params.filename),
       )
 
       const blob = await blockBlobClient.download(0)
 
       res.set({
-        'Content-Length': blob.contentLanguage,
+        'Content-Length': blob.contentLength,
         'Content-Type': blob.contentType,
         ETag: blob.etag,
       })

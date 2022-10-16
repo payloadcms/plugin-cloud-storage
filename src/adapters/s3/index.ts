@@ -15,20 +15,25 @@ export interface Args {
 
 export const s3Adapter =
   ({ config, bucket, acl }: Args): Adapter =>
-  ({ collection, prefix, generatePrefix }): GeneratedAdapter => {
-    const s3 = new AWS.S3(config)
+  ({ collection, prefix }): GeneratedAdapter => {
+    let storageClient: AWS.S3 | null = null
+    const getStorageClient = () => {
+      if (storageClient) return storageClient
+      return (storageClient = new AWS.S3(config))
+    }
+
     return {
       handleUpload: getHandleUpload({
         collection,
-        s3,
+        getStorageClient,
         bucket,
         acl,
         prefix,
         generatePrefix,
       }),
-      handleDelete: getHandleDelete({ s3, bucket }),
+      handleDelete: getHandleDelete({ getStorageClient, bucket }),
       generateURL: getGenerateURL({ bucket, config }),
-      staticHandler: getHandler({ bucket, s3, collection }),
+      staticHandler: getHandler({ bucket, getStorageClient, collection }),
       webpack: extendWebpackConfig,
     }
   }

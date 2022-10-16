@@ -5,30 +5,15 @@ import type { HandleUpload, GeneratePrefix } from '../../types'
 
 interface Args {
   collection: CollectionConfig
-  containerClient: ContainerClient
-  allowContainerCreate: boolean
+  getStorageClient: () => ContainerClient
   prefix?: string
   generatePrefix?: GeneratePrefix
 }
 
-export const getHandleUpload = ({
-  allowContainerCreate,
-  containerClient,
-  prefix = '',
-  generatePrefix,
-}: Args): HandleUpload => {
-  if (allowContainerCreate) {
-    containerClient.createIfNotExists({ access: 'blob' })
-  }
-
-  const keyPaths = [prefix]
-  if (generatePrefix && typeof generatePrefix === 'function') {
-    keyPaths.push(...generatePrefix())
-  }
-
+export const getHandleUpload = ({ getStorageClient, prefix = '' }: Args): HandleUpload => {
   return async ({ data, file }) => {
-    const blockBlobClient = containerClient.getBlockBlobClient(
-      path.posix.join(...keyPaths, file.filename),
+    const blockBlobClient = getStorageClient().getBlockBlobClient(
+      path.posix.join(prefix, file.filename),
     )
 
     await blockBlobClient.upload(file.buffer, file.buffer.byteLength, {

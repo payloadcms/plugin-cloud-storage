@@ -14,21 +14,25 @@ export interface Args {
 
 export const gcsAdapter =
   ({ options, bucket, acl }: Args): Adapter =>
-  ({ collection, prefix, generatePrefix }): GeneratedAdapter => {
-    const gcs = new Storage(options)
+  ({ collection, prefix }): GeneratedAdapter => {
+    let storageClient: Storage | null = null
+    const getStorageClient = () => {
+      if (storageClient) return storageClient
+      return (storageClient = new Storage(options))
+    }
 
     return {
       handleUpload: getHandleUpload({
         collection,
-        gcs,
+        getStorageClient,
         bucket,
         acl,
         prefix,
         generatePrefix,
       }),
-      handleDelete: getHandleDelete({ gcs, bucket }),
-      generateURL: getGenerateURL({ gcs, bucket }),
-      staticHandler: getHandler({ gcs, bucket, collection }),
+      handleDelete: getHandleDelete({ getStorageClient, bucket }),
+      generateURL: getGenerateURL({ getStorageClient, bucket }),
+      staticHandler: getHandler({ getStorageClient, bucket, collection }),
       webpack: extendWebpackConfig,
     }
   }

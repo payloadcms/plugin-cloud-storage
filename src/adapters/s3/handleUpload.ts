@@ -8,24 +8,17 @@ interface Args {
   bucket: string
   acl?: 'private' | 'public-read'
   prefix?: string
-  s3: AWS.S3
-  generatePrefix?: GeneratePrefix
+  getStorageClient: () => AWS.S3
 }
 
 export const getHandleUpload = ({
-  s3,
+  getStorageClient,
   bucket,
   acl,
   prefix = '',
-  generatePrefix,
 }: Args): HandleUpload => {
   return async ({ data, file }) => {
-    const keyPaths = [prefix]
-    if (generatePrefix && typeof generatePrefix === 'function') {
-      keyPaths.push(...generatePrefix())
-    }
-
-    await s3.putObject({
+    await getStorageClient().putObject({
       Bucket: bucket,
       Key: path.posix.join(...keyPaths, file.filename),
       Body: file.buffer,
