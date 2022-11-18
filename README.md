@@ -93,6 +93,7 @@ import { s3Adapter } from '@payloadcms/plugin-cloud-storage/s3';
 
 const adapter = s3Adapter({
   config: {
+    region: process.env.S3_REGION,
     endpoint: process.env.S3_ENDPOINT,
     credentials: {
       accessKeyId: process.env.S3_ACCESS_KEY_ID,
