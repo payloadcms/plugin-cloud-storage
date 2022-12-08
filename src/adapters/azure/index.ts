@@ -7,10 +7,11 @@ import { getHandleUpload } from './handleUpload'
 import { extendWebpackConfig } from './webpack'
 
 export interface Args {
-  connectionString: string
+  connectionString?: string
   containerName: string
   baseURL: string
   allowContainerCreate: boolean
+  storageClient?: ContainerClient
 }
 
 export const azureBlobStorageAdapter = ({
@@ -18,11 +19,17 @@ export const azureBlobStorageAdapter = ({
   allowContainerCreate,
   containerName,
   baseURL,
+  storageClient: customStorageClient,
 }: Args): Adapter => {
-  let storageClient: ContainerClient | null = null
+  let storageClient: ContainerClient | null = customStorageClient ?? null
+
+  if (!connectionString && !customStorageClient) {
+    throw new Error('You must provide a connection string or a storage client')
+  }
+
   const getStorageClient = () => {
     if (storageClient) return storageClient
-    const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString)
+    const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString!) // We know this is defined if storageClient is not
     return (storageClient = blobServiceClient.getContainerClient(containerName))
   }
 
