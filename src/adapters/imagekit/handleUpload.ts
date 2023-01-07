@@ -1,5 +1,4 @@
 import ImageKit from 'imagekit'
-import path from 'path'
 import type { CollectionConfig } from 'payload/types'
 import type { HandleUpload } from '../../types'
 
@@ -19,6 +18,7 @@ export const getHandleUpload = ({
     const response = await getImageKit().upload({
       file : file.buffer, //required
       fileName : file.filename,   //required
+      useUniqueFileName: false,
       /*extensions: [
           {
               name: "google-auto-tagging",
@@ -31,7 +31,7 @@ export const getHandleUpload = ({
     console.log("Upload response", response)
 
     data.cloudImageID = response?.fileId;
-    data.filename = response?.name;
+    //data.filename = response?.name;
     return data;
   }
 }

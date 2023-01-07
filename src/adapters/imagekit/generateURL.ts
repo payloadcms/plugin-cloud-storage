@@ -10,10 +10,18 @@ interface Args {
 export const getGenerateURL =
   ({ getImageKit, urlEndpoint }: Args): GenerateURL =>
   async ({ filename, prefix = "", cloudImageID }) => {
+    
+    /* const fileDetailsResponse = await getImageKit().getFileDetails(cloudImageID); */ //More accurate but slower way to get the URL
 
-    const fileDetailsResponse = await getImageKit().getFileDetails(cloudImageID);
-
+    const url = getImageKit().url({
+      path: path.posix.join(prefix, filename),
+      urlEndpoint: urlEndpoint,
+      /*transformation : [{
+          "height" : "300",
+          "width" : "400"
+      }]*/
+    });
     return decodeURIComponent(
-      fileDetailsResponse.url
+      url
     );
   };

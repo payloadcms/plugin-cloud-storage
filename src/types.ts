@@ -60,7 +60,7 @@ export type GenerateFileURL = (args: {
   collection: CollectionConfig
   filename: string
   prefix?: string
-  size?: ImageSize,
+  size?: ImageSize
   cloudImageID?: string
 }) => Promise<string> | string
 
