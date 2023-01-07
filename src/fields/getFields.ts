@@ -38,7 +38,21 @@ export const getFields = ({
     },
   }
 
+  // Optional, if needed for the adapter
+  const cloudImageIDField: Field = {
+    name: 'cloudImageID',
+    type: 'text',
+    admin: {
+      readOnly: true,
+      disabled: true,
+    },
+  }
+
   const fields = [...collection.fields]
+
+  fields.push({
+    ...cloudImageIDField,
+  })
 
   // Inject a hook into all URL fields to generate URLs
 
@@ -150,6 +164,8 @@ export const getFields = ({
       defaultValue: path.posix.join(prefix),
     })
   }
+
+  
 
   return fields
 }

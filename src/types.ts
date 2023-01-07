@@ -21,10 +21,14 @@ export interface TypeWithPrefix {
   prefix?: string
 }
 
+export interface TypeWithOptionalData {
+  cloudImageID?: string
+}
+
 export type HandleDelete = (args: {
   collection: CollectionConfig
   req: PayloadRequest
-  doc: TypeWithID & FileData & TypeWithPrefix
+  doc: TypeWithID & FileData & TypeWithPrefix & TypeWithOptionalData
   filename: string
 }) => Promise<void> | void
 
@@ -32,6 +36,7 @@ export type GenerateURL = (args: {
   filename: string
   collection: CollectionConfig
   prefix?: string
+  cloudImageID?: string
 }) => string | Promise<string>
 
 export type StaticHandler = (
@@ -55,7 +60,8 @@ export type GenerateFileURL = (args: {
   collection: CollectionConfig
   filename: string
   prefix?: string
-  size?: ImageSize
+  size?: ImageSize,
+  cloudImageID?: string
 }) => Promise<string> | string
 
 export interface CollectionOptions {

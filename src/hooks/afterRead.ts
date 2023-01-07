@@ -22,6 +22,7 @@ export const getAfterReadHook =
         collection,
         filename,
         prefix,
+        cloudImageID: data?.cloudImageID,
       })
     }
 
@@ -31,6 +32,7 @@ export const getAfterReadHook =
         filename,
         prefix,
         size,
+        cloudImageID: data?.cloudImageID,
       })
     }
 
