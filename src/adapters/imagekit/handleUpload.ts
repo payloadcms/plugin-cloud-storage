@@ -6,19 +6,21 @@ interface Args {
   collection: CollectionConfig
   prefix?: string
   getImageKit: () => ImageKit
+  folder?: string,
 }
 
 export const getHandleUpload = ({
   getImageKit,
   prefix = '',
+  folder,
 }: Args): HandleUpload => {
   return async ({ data, file }) => {
-
 
     const response = await getImageKit().upload({
       file : file.buffer, //required
       fileName : file.filename,   //required
       useUniqueFileName: false,
+      folder: folder
       /*extensions: [
           {
               name: "google-auto-tagging",

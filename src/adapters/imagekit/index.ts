@@ -10,10 +10,11 @@ export interface Args {
   publicKey: string;
   privateKey: string;
   urlEndpoint: string;
+  folder?: string;
 }
 
 export const imageKitAdapter =
-  ({ publicKey, privateKey, urlEndpoint }: Args): Adapter =>
+  ({ publicKey, privateKey, urlEndpoint, folder }: Args): Adapter =>
   ({ collection, prefix }): GeneratedAdapter => {
 
     let imageKit: ImageKit | null = null;
@@ -33,6 +34,7 @@ export const imageKitAdapter =
         collection,
         prefix,
         getImageKit,
+        folder,
       }),
       handleDelete: getHandleDelete({ getImageKit }),
       generateURL: getGenerateURL({ getImageKit, urlEndpoint }),
