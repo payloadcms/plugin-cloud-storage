@@ -1,5 +1,5 @@
+import type ImageKit from 'imagekit'
 import type { HandleDelete } from '../../types'
-import ImageKit from 'imagekit'
 
 interface Args {
   getImageKit: () => ImageKit
@@ -7,6 +7,6 @@ interface Args {
 
 export const getHandleDelete = ({ getImageKit }: Args): HandleDelete => {
   return async ({ filename, doc }) => {
-    const response = await getImageKit().deleteFile(doc?.cloudImageID);
+    const response = await getImageKit().deleteFile(doc?.cloudImageID)
   }
 }
