@@ -7,11 +7,21 @@ interface Args {
   getImageKit: () => ImageKit
   urlEndpoint: string
   collection: CollectionConfig
+  folder?: string
 }
 
-export const getHandler = ({ getImageKit, urlEndpoint, collection }: Args): StaticHandler => {
+export const getHandler = ({
+  getImageKit,
+  urlEndpoint,
+  collection,
+  folder,
+}: Args): StaticHandler => {
   return async (req, res, next) => {
-    https.get(urlEndpoint + req.params.filename, mapRes => mapRes.pipe(res))
+    if (folder) {
+      https.get(`${urlEndpoint + folder}/${req.params.filename}`, mapRes => mapRes.pipe(res))
+    } else {
+      https.get(urlEndpoint + req.params.filename, mapRes => mapRes.pipe(res))
+    }
 
     return res
   }

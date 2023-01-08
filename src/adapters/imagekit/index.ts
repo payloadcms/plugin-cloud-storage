@@ -36,7 +36,7 @@ export const imageKitAdapter =
       }),
       handleDelete: getHandleDelete({ getImageKit }),
       generateURL: getGenerateURL({ getImageKit, urlEndpoint }),
-      staticHandler: getHandler({ getImageKit, urlEndpoint, collection }),
+      staticHandler: getHandler({ getImageKit, urlEndpoint, collection, folder }),
       webpack: extendWebpackConfig,
     }
   }

@@ -16,19 +16,17 @@ export const getHandleUpload = ({ getImageKit, prefix = '', folder }: Args): Han
       fileName: file.filename, // required
       useUniqueFileName: false,
       folder,
-      /* extensions: [
-          {
-              name: "google-auto-tagging",
-              maxTags: 5,
-              minConfidence: 95,
-          }
-      ], */
+      extensions: [
+        {
+          name: 'google-auto-tagging',
+          maxTags: 5,
+          minConfidence: 95,
+        },
+      ],
     })
 
-    console.log('Upload response', response)
-
     data.cloudImageID = response?.fileId
-    // data.filename = response?.name;
+    data.filename = response?.name
     return data
   }
 }

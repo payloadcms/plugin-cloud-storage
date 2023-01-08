@@ -7,6 +7,6 @@ interface Args {
 
 export const getHandleDelete = ({ getImageKit }: Args): HandleDelete => {
   return async ({ filename, doc }) => {
-    const response = await getImageKit().deleteFile(doc?.cloudImageID)
+    await getImageKit().deleteFile(doc?.cloudImageID)
   }
 }
