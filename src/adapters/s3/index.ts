@@ -1,4 +1,5 @@
 import * as AWS from '@aws-sdk/client-s3'
+import type { S3 } from '@aws-sdk/client-s3'
 import type { Adapter, GeneratedAdapter } from '../../types'
 import { getGenerateURL } from './generateURL'
 import { getHandler } from './staticHandler'
@@ -16,9 +17,10 @@ export const s3Adapter =
   ({ config, bucket, acl }: Args): Adapter =>
   ({ collection, prefix }): GeneratedAdapter => {
     let storageClient: AWS.S3 | null = null
-    const getStorageClient = () => {
+    const getStorageClient = (): S3 => {
       if (storageClient) return storageClient
-      return (storageClient = new AWS.S3(config))
+      storageClient = new AWS.S3(config)
+      return storageClient
     }
 
     return {
