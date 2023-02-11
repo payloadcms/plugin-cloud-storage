@@ -1,15 +1,25 @@
-import { buildConfig } from 'payload/config'
 import path from 'path'
-import Users from './collections/Users'
+import { buildConfig } from 'payload/config'
 import { cloudStorage } from '../../src'
-import { s3Adapter } from '../../src/adapters/s3'
-import { gcsAdapter } from '../../src/adapters/gcs'
 import { azureBlobStorageAdapter } from '../../src/adapters/azure'
+import { gcsAdapter } from '../../src/adapters/gcs'
+import { s3Adapter } from '../../src/adapters/s3'
+import { supabaseAdapter } from '../../src/adapters/supabase'
 import type { Adapter } from '../../src/types'
 import { Media } from './collections/Media'
+import Users from './collections/Users'
 
 let adapter: Adapter
 let uploadOptions
+
+if (process.env.PAYLOAD_PUBLIC_CLOUD_STORAGE_ADAPTER === 'supabase') {
+  adapter = supabaseAdapter({
+    config: {
+      url: process.env.SUPABASE_ENDPOINT,
+      key: process.env.SUPABASE_ANON_PUBLIC_KEY,
+    },
+  })
+}
 
 if (process.env.PAYLOAD_PUBLIC_CLOUD_STORAGE_ADAPTER === 'azure') {
   adapter = azureBlobStorageAdapter({
@@ -69,6 +79,7 @@ export default buildConfig({
             '@azure/storage-blob': path.resolve(__dirname, '../../src/adapters/azure/mock.js'),
             '@aws-sdk/client-s3': path.resolve(__dirname, '../../src/adapters/s3/mock.js'),
             '@google-cloud/storage': path.resolve(__dirname, '../../src/adapters/gcs/mock.js'),
+            '@supabase/supabase-js': path.resolve(__dirname, '../../src/adapters/gcs/mock.js'),
           },
         },
       }
