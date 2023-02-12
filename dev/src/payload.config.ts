@@ -14,10 +14,9 @@ let uploadOptions
 
 if (process.env.PAYLOAD_PUBLIC_CLOUD_STORAGE_ADAPTER === 'supabase') {
   adapter = supabaseAdapter({
-    config: {
-      url: process.env.SUPABASE_ENDPOINT,
-      key: process.env.SUPABASE_ANON_PUBLIC_KEY,
-    },
+    apiKey: process.env.SUPABASE_SECRET_KEY,
+    bucket: process.env.SUPABASE_BUCKET_NAME,
+    url: process.env.SUPABASE_ENDPOINT,
   })
 }
 
@@ -79,7 +78,7 @@ export default buildConfig({
             '@azure/storage-blob': path.resolve(__dirname, '../../src/adapters/azure/mock.js'),
             '@aws-sdk/client-s3': path.resolve(__dirname, '../../src/adapters/s3/mock.js'),
             '@google-cloud/storage': path.resolve(__dirname, '../../src/adapters/gcs/mock.js'),
-            '@supabase/supabase-js': path.resolve(__dirname, '../../src/adapters/gcs/mock.js'),
+            '@supabase/storage-js': path.resolve(__dirname, '../../src/adapters/supabase/mock.js'),
           },
         },
       }

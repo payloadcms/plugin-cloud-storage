@@ -1,23 +1,34 @@
-import { createClient } from '@supabase/supabase-js'
+import { StorageClient } from '@supabase/storage-js'
+import { getGenerateURL } from './generateURL'
+import { getHandleDelete } from './handleDelete'
+import { getHandleUpload } from './handleUpload'
+import { getHandler } from './staticHandler'
 import { extendWebpackConfig } from './webpack'
 
 interface Args {
-  config: {
-    url: string
-    key: string
-  }
+  url: string
+  apiKey: string
+  bucket: string
 }
 
-export const supabaseAdapter = async ({ config }: Args): any => {
-  const supabase = createClient(config.url, config.key)
+export const supabaseAdapter =
+  ({ url, apiKey, bucket }: Args): any =>
+  ({ collection, prefix }: any): any => {
+    let storageClient: StorageClient | null = null
+    const getStorageClient: () => StorageClient = () => {
+      if (storageClient) return storageClient
+      storageClient = new StorageClient(url, {
+        apikey: apiKey,
+        Authorization: `Bearer ${apiKey}`,
+      })
+      return storageClient
+    }
 
-  const { data, error } = await supabase.storage.getBucket('avatars')
-  console.log({ data, error })
-  return {
-    handleUpload: () => null,
-    handleDelete: () => null,
-    generateURL: () => null,
-    staticHandler: () => null,
-    webpack: extendWebpackConfig,
+    return {
+      handleUpload: getHandleUpload({ getStorageClient, bucket, prefix }),
+      handleDelete: getHandleDelete({ getStorageClient, bucket }),
+      generateURL: getGenerateURL({ bucket, endpoint: url }),
+      staticHandler: getHandler({ getStorageClient, bucket, collection }),
+      webpack: extendWebpackConfig,
+    }
   }
-}

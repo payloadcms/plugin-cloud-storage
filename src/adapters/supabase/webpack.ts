@@ -8,8 +8,8 @@ export const extendWebpackConfig = (existingWebpackConfig: WebpackConfig): Webpa
       ...(existingWebpackConfig.resolve || {}),
       alias: {
         ...(existingWebpackConfig.resolve?.alias ? existingWebpackConfig.resolve.alias : {}),
-        '@supabase/supabase-js': path.resolve(__dirname, './mock.js'),
-        // fs: path.resolve(__dirname, './fileStub.js'),
+        '@supabase/storage-js': path.resolve(__dirname, './mock.js'),
+        fs: path.resolve(__dirname, './fileStub.js'),
       },
     },
   }
