@@ -42,6 +42,7 @@ This plugin supports the following adapters:
 - [Azure Blob Storage](#azure-blob-storage-adapter)
 - [AWS S3-style Storage](#s3-adapter)
 - [Google Cloud Storage](#gcs-adapter)
+- [Supabase Storage Adapter](#supabase-adapter)
 
 However, you can create your own adapter for any third-party service you would like to use.
 
@@ -146,6 +147,27 @@ const adapter = gcsAdapter({
     credentials: JSON.parse(process.env.GCS_CREDENTIALS) // this env variable will have stringify version of your credentials.json file
   },
   bucket: process.env.GCS_BUCKET,
+})
+
+// Now you can pass this adapter to the plugin
+```
+
+### Supabase Adapter
+
+To use the Supabase adapter, some peer dependencies need to be installed:
+
+`yarn add @supabase/storage-js fast-blob-stream`.
+
+From there, create the adapter, passing in all of its required properties:
+
+```js
+import { s3Adapter } from '@payloadcms/plugin-cloud-storage/supabase';
+
+const adapter = supabaseAdapter({
+    apiKey: process.env.SUPABASE_SECRET_KEY,// this env variable will have the service_role key of your supabase project
+    bucket: process.env.SUPABASE_BUCKET_NAME,
+    // this env variable will have the bucket name
+    url: process.env.SUPABASE_ENDPOINT,// this env variable will have the endpoint of your supabase project
 })
 
 // Now you can pass this adapter to the plugin
