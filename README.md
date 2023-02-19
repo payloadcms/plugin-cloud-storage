@@ -161,7 +161,7 @@ To use the Supabase adapter, some peer dependencies need to be installed:
 From there, create the adapter, passing in all of its required properties:
 
 ```js
-import { s3Adapter } from '@payloadcms/plugin-cloud-storage/supabase';
+import { supabaseAdapter } from '@payloadcms/plugin-cloud-storage/supabase';
 
 const adapter = supabaseAdapter({
     apiKey: process.env.SUPABASE_SECRET_KEY,// this env variable will have the service_role key of your supabase project
