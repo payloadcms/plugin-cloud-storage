@@ -8,6 +8,16 @@ This repository includes a local development environment for local testing and d
 1. `cd` into `./dev` and run `cp .env.example .env` to create an `.env` file
 1. Open your newly created `./dev/.env` file and _completely_ fill out each property
 
+### Supabase Adapter Development
+
+By now, this repository does not come with a Docker emulator for Supabase Storage.
+
+If you would like to test locally this plugin, use the following steps:
+
+1. Sign up for a free plan in Supabase platform.
+1. Make sure your environment variables within `./dev/.env` are configured for your Supabase connection.
+1. Finally, run `yarn dev:supabase` and then open `http://localhost:3000/admin` in your browser.
+
 ### Azure Adapter Development
 
 This repository comes with a Docker emulator for Azure Blob Storage.
