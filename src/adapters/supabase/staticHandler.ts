@@ -1,4 +1,5 @@
 import type { StorageClient } from '@supabase/storage-js'
+import { BlobReadStream } from 'fast-blob-stream'
 import path from 'path'
 import type { CollectionConfig } from 'payload/types'
 import type { StaticHandler } from '../../types'
@@ -24,13 +25,19 @@ export const getHandler = ({ getStorageClient, bucket, collection }: Args): Stat
       const file = data![0]
       const fileDownloaded = await getStorageClient().from(bucket).download(key)
       const blobFile = fileDownloaded.data
+
       res.set({
         'Content-Length': file.metadata.contentLength,
         'Content-Type': file.metadata.mimetype,
         ETag: file.metadata.eTag,
       })
-      // NOT WORKING
-      return res
+
+      if (blobFile) {
+        const readStream = new BlobReadStream(blobFile)
+        return readStream.pipe(res)
+      }
+
+      return next()
     } catch (err: unknown) {
       req.payload.logger.error(err)
       return next()

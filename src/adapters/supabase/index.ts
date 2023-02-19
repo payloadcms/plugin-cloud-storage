@@ -1,19 +1,20 @@
 import { StorageClient } from '@supabase/storage-js'
+import type { Adapter, GeneratedAdapter } from '../../types'
 import { getGenerateURL } from './generateURL'
 import { getHandleDelete } from './handleDelete'
 import { getHandleUpload } from './handleUpload'
 import { getHandler } from './staticHandler'
 import { extendWebpackConfig } from './webpack'
 
-interface Args {
+export interface Args {
   url: string
   apiKey: string
   bucket: string
 }
 
 export const supabaseAdapter =
-  ({ url, apiKey, bucket }: Args): any =>
-  ({ collection, prefix }: any): any => {
+  ({ url, apiKey, bucket }: Args): Adapter =>
+  ({ collection, prefix }): GeneratedAdapter => {
     let storageClient: StorageClient | null = null
     const getStorageClient: () => StorageClient = () => {
       if (storageClient) return storageClient

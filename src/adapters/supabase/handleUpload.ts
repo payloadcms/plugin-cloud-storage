@@ -1,5 +1,8 @@
 import type { StorageClient } from '@supabase/storage-js'
+import fs from 'fs'
 import path from 'path'
+import type stream from 'stream'
+import type { HandleUpload } from '../../types'
 
 interface Args {
   getStorageClient: () => StorageClient
@@ -7,11 +10,17 @@ interface Args {
   prefix?: string
 }
 
-export const getHandleUpload = ({ getStorageClient, bucket, prefix = '' }: Args): any => {
-  return async ({ data, file }: any) => {
-    const fileKey: string = path.posix.join(prefix, file.filename)
+export const getHandleUpload = ({ getStorageClient, bucket, prefix = '' }: Args): HandleUpload => {
+  return async ({ data, file }) => {
+    const fileKey = path.posix.join(prefix, file.filename)
 
-    await getStorageClient().from(bucket).upload(fileKey, file)
+    const fileBufferOrStream: Buffer | stream.Readable = file.tempFilePath
+      ? fs.createReadStream(file.tempFilePath)
+      : file.buffer
+
+    await getStorageClient().from(bucket).upload(fileKey, fileBufferOrStream, {
+      contentType: file.mimeType,
+    })
 
     return data
   }
