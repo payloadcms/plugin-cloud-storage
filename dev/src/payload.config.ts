@@ -79,6 +79,7 @@ export default buildConfig({
             '@aws-sdk/client-s3': path.resolve(__dirname, '../../src/adapters/s3/mock.js'),
             '@google-cloud/storage': path.resolve(__dirname, '../../src/adapters/gcs/mock.js'),
             '@supabase/storage-js': path.resolve(__dirname, '../../src/adapters/supabase/mock.js'),
+            'fast-blob-stream': path.resolve(__dirname, '../../src/adapters/supabase/mock.js'),
           },
         },
       }
