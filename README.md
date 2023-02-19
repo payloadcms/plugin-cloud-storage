@@ -165,8 +165,7 @@ import { supabaseAdapter } from '@payloadcms/plugin-cloud-storage/supabase';
 
 const adapter = supabaseAdapter({
     apiKey: process.env.SUPABASE_SECRET_KEY,// this env variable will have the service_role key of your supabase project
-    bucket: process.env.SUPABASE_BUCKET_NAME,
-    // this env variable will have the bucket name
+    bucket: process.env.SUPABASE_BUCKET_NAME,// this env variable will have the bucket name
     url: process.env.SUPABASE_ENDPOINT,// this env variable will have the endpoint of your supabase project
 })
 
