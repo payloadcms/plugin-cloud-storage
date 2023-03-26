@@ -154,7 +154,7 @@ const adapter = gcsAdapter({
 
 ### ImageKit Adapter
 
-To use the ImageKit adapter, you need to have `katex` installed in your project dependencies. To do so, run `yarn add katex`.
+To use the ImageKit adapter, you need to have `imagekit` installed in your project dependencies. To do so, run `yarn add imagekit`.
 
 From there, create the adapter, passing in all of its required properties:
 
