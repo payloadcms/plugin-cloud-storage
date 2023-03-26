@@ -171,6 +171,8 @@ const adapter = imageKitAdapter({
 // Now you can pass this adapter to the plugin
 ```
 
+Inside the ImageKit Dashboard Settings, you have to make sure that the setting "Media Library > Ensure unique image names during upload" is disabled
+
 ### Payload Access Control
 
 Payload ships with access control that runs _even on statically served files_. The same `read` access control property on your `upload`-enabled collections is used, and it allows you to restrict who can request your uploaded files.
