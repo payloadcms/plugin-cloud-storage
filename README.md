@@ -42,6 +42,7 @@ This plugin supports the following adapters:
 - [Azure Blob Storage](#azure-blob-storage-adapter)
 - [AWS S3-style Storage](#s3-adapter)
 - [Google Cloud Storage](#gcs-adapter)
+- [ImageKit](#imagekit-adapter)
 
 However, you can create your own adapter for any third-party service you would like to use.
 
@@ -146,6 +147,25 @@ const adapter = gcsAdapter({
     credentials: JSON.parse(process.env.GCS_CREDENTIALS) // this env variable will have stringify version of your credentials.json file
   },
   bucket: process.env.GCS_BUCKET,
+})
+
+// Now you can pass this adapter to the plugin
+```
+
+### ImageKit Adapter
+
+To use the ImageKit adapter, you need to have `katex` installed in your project dependencies. To do so, run `yarn add katex`.
+
+From there, create the adapter, passing in all of its required properties:
+
+```js
+import { imageKitAdapter } from '@payloadcms/plugin-cloud-storage/imagekit';
+
+const adapter = imageKitAdapter({
+  publicKey: "your imagekit public key",
+  privateKey: "your imagekit private key",
+  urlEndpoint: "https://ik.imagekit.io/yourendpoint/",
+  folder: "optional: some imagekit folder"
 })
 
 // Now you can pass this adapter to the plugin
