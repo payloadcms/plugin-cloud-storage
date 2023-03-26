@@ -44,7 +44,7 @@ export const getFields = ({
     type: 'text',
     admin: {
       readOnly: true,
-      disabled: true,
+      hidden: true,
     },
   }
 
