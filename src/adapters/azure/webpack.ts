@@ -11,6 +11,7 @@ export const extendWebpackConfig = (existingWebpackConfig: WebpackConfig): Webpa
         stream: path.resolve(__dirname, './mock.js'),
         '@azure/storage-blob': path.resolve(__dirname, './mock.js'),
         '@azure/abort-controller': path.resolve(__dirname, './mock.js'),
+        fs: path.resolve(__dirname, './fileStub.js'),
       },
     },
   }
