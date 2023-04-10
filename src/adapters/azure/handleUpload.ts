@@ -19,6 +19,7 @@ export const getHandleUpload = ({ getStorageClient, prefix = '' }: Args): Handle
       path.posix.join(prefix, file.filename),
     )
 
+    // when there are no temp files, or the upload is less than the threshold size, do not stream files
     if (!file.tempFilePath && file.buffer.length > 0 && file.buffer.length < multipartThreshold) {
       await blockBlobClient.upload(file.buffer, file.buffer.byteLength, {
         blobHTTPHeaders: { blobContentType: file.mimeType },
