@@ -6,9 +6,16 @@ export const extendWebpackConfig = (existingWebpackConfig: WebpackConfig): Webpa
     ...existingWebpackConfig,
     resolve: {
       ...(existingWebpackConfig.resolve || {}),
+      fallback: {
+        ...(existingWebpackConfig.resolve?.fallback ? existingWebpackConfig.resolve.fallback : {}),
+        stream: false,
+      },
       alias: {
         ...(existingWebpackConfig.resolve?.alias ? existingWebpackConfig.resolve.alias : {}),
+        stream: path.resolve(__dirname, './mock.js'),
         '@azure/storage-blob': path.resolve(__dirname, './mock.js'),
+        '@azure/abort-controller': path.resolve(__dirname, './mock.js'),
+        fs: path.resolve(__dirname, './fileStub.js'),
       },
     },
   }
