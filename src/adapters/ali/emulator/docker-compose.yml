@@ -1,0 +1,11 @@
+version: '3.2'
+services:
+  oss-emulator:
+    image: rkuprieiev/oss-emulator:latest
+    container_name: oss-emulator-demo
+    ports:
+      - '8880:8880'
+    volumes:
+      - ./ali-oss:/oss-emulator/store
+volumes:
+  ali-oss:

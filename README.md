@@ -63,6 +63,7 @@ This plugin supports the following adapters:
 - [Azure Blob Storage](#azure-blob-storage-adapter)
 - [AWS S3-style Storage](#s3-adapter)
 - [Google Cloud Storage](#gcs-adapter)
+- [Ali OSS](#ali-oss-adapter)
 
 However, you can create your own adapter for any third-party service you would like to use.
 
@@ -170,6 +171,28 @@ const adapter = gcsAdapter({
     credentials: JSON.parse(process.env.GCS_CREDENTIALS || "{}") // this env variable will have stringify version of your credentials.json file
   },
   bucket: process.env.GCS_BUCKET,
+})
+
+// Now you can pass this adapter to the plugin
+```
+
+### Ali OSS Adapter
+
+To use the Ali adapter, you need to have `ali-oss` installed in your project dependencies. To do so, run `yarn add ali-oss`.
+
+From there, create the adapter, passing in all of its required properties:
+
+```js
+import { aliAdapter } from '@payloadcms/plugin-cloud-storage/ali';
+
+const adapter = aliAdapter({
+  config: {
+    accessKeyId: process.env.ALI_ACCESS_KEY_ID,
+    accessKeySecret: process.env.ALI_ACCESS_KEY_SECRET,
+    region: process.env.ALI_REGION,
+    bucket: process.env.ALI_BUCKET,
+    // ... Other Ali configuration
+  },
 })
 
 // Now you can pass this adapter to the plugin

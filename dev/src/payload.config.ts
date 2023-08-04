@@ -4,6 +4,7 @@ import Users from './collections/Users'
 import { cloudStorage } from '../../src'
 import { s3Adapter } from '../../src/adapters/s3'
 import { gcsAdapter } from '../../src/adapters/gcs'
+import { aliAdapter } from '../../src/adapters/ali'
 import { azureBlobStorageAdapter } from '../../src/adapters/azure'
 import type { Adapter } from '../../src/types'
 import { Media } from './collections/Media'
@@ -21,6 +22,18 @@ if (process.env.PAYLOAD_PUBLIC_CLOUD_STORAGE_ADAPTER === 'azure') {
   // uploadOptions = {
   //   useTempFiles: true,
   // }
+}
+
+if (process.env.PAYLOAD_PUBLIC_CLOUD_STORAGE_ADAPTER === 'ali') {
+  adapter = aliAdapter({
+    config: {
+      accessKeyId: process.env.ALI_ACCESS_KEY_ID as string,
+      accessKeySecret: process.env.ALI_ACCESS_KEY_SECRET as string,
+      endpoint: process.env.ALI_ENDPOINT as string,
+      bucket: process.env.ALI_BUCKET as string,
+      sldEnable: true, // for testing in local, pass bucket as path params if true
+    },
+  })
 }
 
 if (process.env.PAYLOAD_PUBLIC_CLOUD_STORAGE_ADAPTER === 's3') {
