@@ -30,7 +30,7 @@ export function getIncomingFiles({
           files = files.concat([
             {
               filename: `${resizedFileData.filename}`,
-              mimeType: data.mimeType,
+              mimeType: resizedFileData.mimeType,
               buffer: req.payloadUploadSizes[key],
               filesize: req.payloadUploadSizes[key].length,
             },
