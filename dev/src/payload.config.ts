@@ -3,6 +3,7 @@ import path from 'path'
 import Users from './collections/Users'
 import { cloudStorage } from '../../src'
 import { s3Adapter } from '../../src/adapters/s3'
+import { cloudinaryAdapter } from '../../src/adapters/cloudinaryffff'
 import { gcsAdapter } from '../../src/adapters/gcs'
 import { azureBlobStorageAdapter } from '../../src/adapters/azure'
 import type { Adapter } from '../../src/types'
@@ -21,6 +22,16 @@ if (process.env.PAYLOAD_PUBLIC_CLOUD_STORAGE_ADAPTER === 'azure') {
   // uploadOptions = {
   //   useTempFiles: true,
   // }
+}
+
+if (process.env.PAYLOAD_PUBLIC_CLOUD_STORAGE_ADAPTER === 'cloudinary') {
+  adapter = cloudinaryAdapter({
+    config: {
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+    },
+  })
 }
 
 if (process.env.PAYLOAD_PUBLIC_CLOUD_STORAGE_ADAPTER === 's3') {
@@ -71,6 +82,7 @@ export default buildConfig({
             react: path.resolve(__dirname, '../node_modules/react'),
             '@azure/storage-blob': path.resolve(__dirname, '../../src/adapters/azure/mock.js'),
             '@aws-sdk/client-s3': path.resolve(__dirname, '../../src/adapters/s3/mock.js'),
+            cloudinary: path.resolve(__dirname, '../../src/adapters/cloudinary/mock.js'),
             '@google-cloud/storage': path.resolve(__dirname, '../../src/adapters/gcs/mock.js'),
             fs: path.resolve(__dirname, '../../src/adapters/s3/fsMock.js'),
           },
@@ -88,6 +100,7 @@ export default buildConfig({
       collections: {
         media: {
           adapter,
+          disablePayloadAccessControl: true,
         },
       },
     }),

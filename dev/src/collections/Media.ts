@@ -17,6 +17,7 @@ const urlField: Field = {
 export const Media: CollectionConfig = {
   slug: 'media',
   upload: {
+    /*
     imageSizes: [
       {
         height: 400,
@@ -31,6 +32,7 @@ export const Media: CollectionConfig = {
         name: 'sixteenByNineMedium',
       },
     ],
+  */
   },
   fields: [
     {

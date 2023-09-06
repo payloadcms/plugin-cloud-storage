@@ -246,3 +246,4 @@ dist
 
 # Ignore emulator volumes
 src/adapters/s3/emulator/.localstack/
+.npmrc
