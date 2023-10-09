@@ -1,7 +1,1 @@
-exports.BlobServiceClient = {
-  fromConnectionString: () => ({
-    getContainerClient: () => ({
-      createIfNotExists: () => null,
-    }),
-  }),
-}
+export const azureBlobStorageAdapter = () => ({})
