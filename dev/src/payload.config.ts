@@ -115,7 +115,7 @@ export default buildConfig({
       collections: {
         media: {
           adapter,
-          disablePayloadAccessControl: true,
+          disablePayloadAccessControl: false,
         },
       },
     }),

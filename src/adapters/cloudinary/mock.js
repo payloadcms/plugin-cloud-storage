@@ -1,4 +1,4 @@
-exports.S3 = () => null
+exports.cloudinaryAdapter = () => null
 exports.Upload = () => null
 
 exports.HeadObjectCommand = () => null

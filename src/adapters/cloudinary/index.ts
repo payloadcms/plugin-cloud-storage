@@ -1,5 +1,5 @@
-import type * as AWS from '@aws-sdk/client-s3'
-import * as cloudinary from 'cloudinary'
+import { v2 as cloudinary } from 'cloudinary'
+import type { ConfigOptions } from 'cloudinary'
 import type { Adapter, GeneratedAdapter } from '../../types'
 import { getGenerateURL } from './generateURL'
 import { getHandler } from './staticHandler'
@@ -9,9 +9,9 @@ import { extendWebpackConfig } from './webpack'
 
 export interface Args {
   /**
-   * AWS S3 client configuration. Highly dependent on your AWS setup.
+   * Cloudinary client configuration.
    *
-   * [AWS.S3ClientConfig Docs](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-s3/interfaces/s3clientconfig.html)
+   * [Cloudinary Node Docs](https://cloudinary.com/documentation/node_integration)
    */
   config: {
     cloud_name?: string
@@ -23,11 +23,11 @@ export interface Args {
 export const cloudinaryAdapter =
   ({ config = {} }: Args): Adapter =>
   ({ collection, prefix }): GeneratedAdapter => {
-    let storageClient: any | null = null
-    const getStorageClient: () => any = () => {
+    const storageClient: any | null = null
+    const getStorageClient: () => ConfigOptions = () => {
       if (storageClient) return storageClient
-      storageClient = cloudinary //  new AWS.S3(config)
-      return storageClient
+      cloudinary.config(config)
+      return cloudinary
     }
 
     return {
@@ -37,7 +37,7 @@ export const cloudinaryAdapter =
         prefix,
       }),
       handleDelete: getHandleDelete({ getStorageClient }),
-      generateURL: getGenerateURL({ config }),
+      generateURL: getGenerateURL({ getStorageClient }),
       staticHandler: getHandler({ getStorageClient, collection }),
       webpack: extendWebpackConfig,
     }
