@@ -1,4 +1,3 @@
-import path from 'path'
 import * as cloudinary from 'cloudinary'
 import type { GenerateURL } from '../../types'
 
